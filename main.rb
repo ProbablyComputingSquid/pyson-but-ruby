@@ -75,6 +75,9 @@ def readPysonFile(filename)
                 temp = PysonValue::PysonArray.new(line[0], line[2]).toArray()
             when "float"
                 temp = PysonValue::PysonFloat.new(line[0], line[2]).toFloat()
+            # Any type? more like STRING
+            when "any"
+                temp = PysonValue.new(line[0], line[2]).toString()
             else
                 puts "You gave me #{line[1]} -- I have no idea what to do with that."
         end
