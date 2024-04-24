@@ -2,7 +2,10 @@
 # PysonValue is a default implementation of PysonValue interface, kind of a base
 class PysonValue
     def initialize(name, value)
-        @type = "any"
+        if not defined?(@type)
+            raise "Stop using the any type"
+        end
+        #@type = "any"
         @name = name
         @value = value
     end
@@ -16,8 +19,8 @@ end
 # PysonInteger is the implementation of PysonValue interface for integer
 class PysonValue::PysonInteger < PysonValue
     def initialize(name, value)
-        super
         @type = "int"
+        super
     end
     def toInt()
         Integer(@value)
@@ -26,8 +29,8 @@ end
 # PysonString is the implementation of PysonValue interface for string
 class PysonValue::PysonString < PysonValue
     def initialize(name, value)
-        super
         @type = "str"
+        super
     end
 end
 # PysonArray is the implementation of PysonValue interface for thet array (list) type
@@ -36,8 +39,8 @@ end
 # implementation works
 class PysonValue::PysonArray < PysonValue
     def initialize(name, value)
-        super
         @type = "list"
+        super
     end
     def toArray()
         temp = @value.split("(*)").join(', ')
@@ -46,8 +49,8 @@ end
 # PysonFloat is the implementation of PysonValue interface for the float type
 class PysonValue::PysonFloat < PysonValue
     def initialize(name, value)
-        super
         @type = "float"
+        super
     end
     def toFloat()
         Float(@value)
@@ -77,6 +80,7 @@ def readPysonFile(filename)
                 temp = PysonValue::PysonFloat.new(line[0], line[2]).toFloat()
             # Any type? more like STRING
             when "any"
+                warn "Stop using the any type guys"
                 temp = PysonValue.new(line[0], line[2]).toString()
             else
                 puts "You gave me #{line[1]} -- I have no idea what to do with that."

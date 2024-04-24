@@ -1,0 +1,4 @@
+name:str:Eli
+age:int:42
+friends:list:Liam(*)Josh
+pi:float:3.1415962
