@@ -91,6 +91,48 @@ def readPysonFile(filename)
     return output
 end
 
+def getData(filePath, dataName)
+    """Inputs: 
+    filePath - folder/file.pyson (note: can have multiple folder paths, however file MUST use pyson-type file configuration.
+    datacall: str - name of data that you are extracting
+    Outputs the data stored in pyson format that it's inserted as."""
+    # Checks for .pyson compatability
+    # [TODO]
+    #if not checkCompatible(filePath)
+    #    raise "File is not compatible with .pyson format."
+    #end
+        # start lost and found
+    lost = File.open(filePath, "r").read().split("\n")
+    found = nil
+    foundT = nil
+    for i in lost
+        if i.split(":")[0] == dataName
+            found = i.split(":")[2]
+            foundT = i.split(":")[1]
+        end
+    end
+
+    if found.nil?
+        raise "Data At Value #{dataName} Not Found. Maybe try a different file?"
+    end
+        
+    case foundT
+        when "str"
+            return String(found)
+        when "int"
+            return Integer(found)
+        when "float"
+            return Float(found)
+        when "list"
+            return found.split("(*)")
+        when nil
+            warn "Warning: Encountered 'none' type. Please verify the input."
+            # Handle the 'none' type case or raise an error
+        else
+            puts "You gave me #{line[1]} -- I have no idea what to do with that."
+        end
+    end
+
 # writes pyson data to a pyson file. data is a list of PysonValue objects
 # the program "calls" each object (slow, I know) but it makes it easier to maintain
 def writePysonfile(filename, data)
@@ -105,12 +147,13 @@ end
 # examples for writing and reading pyson files
 
 readPysonFile("example.pyson")
-writePysonfile("example.pyson", [
-        PysonValue::PysonString.new("name", "Eli"),
-        PysonValue::PysonInteger.new("age", 42),
-        PysonValue::PysonArray.new("friends", "Liam(*)Josh"),
-        PysonValue::PysonFloat.new("pi", 3.1415962),
-        # dont use this
-        #PysonValue.new("Any type", "should be deprecated")
-    ]
-)
+# writePysonfile("example.pyson", [
+#         PysonValue::PysonString.new("name", "Eli"),
+#         PysonValue::PysonInteger.new("age", 42),
+#         PysonValue::PysonArray.new("friends", "Liam(*)Josh"),
+#         PysonValue::PysonFloat.new("pi", 3.1415962),
+#         # dont use this
+#         #PysonValue.new("Any type", "should be deprecated")
+#     ]
+# )
+puts getData("example.pyson", "name")
