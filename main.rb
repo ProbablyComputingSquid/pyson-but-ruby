@@ -80,7 +80,7 @@ def readPysonFile(filename)
                 temp = PysonValue::PysonFloat.new(line[0], line[2]).toFloat()
             # Any type? more like STRING
             when "any"
-                warn "Stop using the any type guys"
+                warn "Warning: Please stop using the any type guys"
                 temp = PysonValue.new(line[0], line[2]).toString()
             else
                 puts "You gave me #{line[1]} -- I have no idea what to do with that."
@@ -103,11 +103,14 @@ def writePysonfile(filename, data)
 end
 
 # examples for writing and reading pyson files
+
 readPysonFile("example.pyson")
-writePysonfile("example2.pyson", [
+writePysonfile("example.pyson", [
         PysonValue::PysonString.new("name", "Eli"),
         PysonValue::PysonInteger.new("age", 42),
         PysonValue::PysonArray.new("friends", "Liam(*)Josh"),
         PysonValue::PysonFloat.new("pi", 3.1415962),
+        # dont use this
+        #PysonValue.new("Any type", "should be deprecated")
     ]
 )
