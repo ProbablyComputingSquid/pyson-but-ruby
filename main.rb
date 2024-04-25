@@ -131,7 +131,7 @@ end
 # writes pyson data to a pyson file. data is a list of PysonValue objects
 # the program "calls" each object (slow, I know) but it makes it easier to maintain
 def writePysonfile(filename, data)
-    file = File.open(filename, "w"); 
+    file = File.open(filename, "w")
     output = "" 
     for i in data
         output += (i.call + "\n")
@@ -152,9 +152,12 @@ def verifyFile(filename)
     end
     # check for invalid types
     for i in file
-        case i.split(":")[1])
+        if i.split(":").length() != 3
+            raise "Invalid formatting, Expected 3 parts, name:type:value but got #{i}"
+        case i.split(":")[1]
             when not ("str" or "int" or "float" or "list")
                 raise "Invalid type #{i} at line #{file.index(i)} in #{filename}"
+        end
     end
 end
 
