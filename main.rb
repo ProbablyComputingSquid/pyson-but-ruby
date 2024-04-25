@@ -99,13 +99,14 @@ def getData(filePath, dataName)
     datacall: str - name of data that you are extracting
     Outputs the data stored in pyson format that it's inserted as."""
     
-    data = File.open(filePath, "r").read().split("\n")
+    
     found = nil
     foundType = nil
-    for i in data
-        if i.split(":")[0] == dataName
-            found = i.split(":")[2]
-            foundType = i.split(":")[1]
+    for item in File.open(filePath, "r").read().split("\n")
+        splitted = item.split(":")
+        if splitted[0] == dataName
+            found = splitted[2]
+            foundType = splitted[1]
             break
         end
     end
@@ -143,9 +144,7 @@ def verifyFile(filename)
     """Checks if the file is a pyson file. Returns true if it is, false if it isn't"""
     # TODO: add more checks
     file = File.open(filename, "r").read().split("\n")
-    # check if file extension is .pyson
-    if not filename.split(".").last == "pyson"
-        raise "#{filename} is not a .pyson file"
+    
     # check for duplications
     if duplications(file)
         raise "Duplicate Data has been Found in #{filename}"
