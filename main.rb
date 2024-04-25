@@ -143,6 +143,17 @@ def verifyFile(filename)
     """Checks if the file is a pyson file. Returns true if it is, false if it isn't"""
     # TODO
 end
+
+# o(n) list filtering algo (better than naive o(n^2))
+def checkIfDuplicates(list)
+    result = []
+    hash_table = {}
+    list.each do |item|
+        return true if hash_table[item]
+        hash_table[item] = true
+    end
+    return false
+end
 # examples for writing and reading pyson files
 
 readPysonFile("example.pyson")
