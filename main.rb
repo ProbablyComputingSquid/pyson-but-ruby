@@ -141,11 +141,25 @@ end
 
 def verifyFile(filename)
     """Checks if the file is a pyson file. Returns true if it is, false if it isn't"""
-    # TODO
+    # TODO: add more checks
+    file = File.open(filename, "r").read().split("\n")
+    # check if file extension is .pyson
+    if not filename.split(".").last == "pyson"
+        raise "#{filename} is not a .pyson file"
+    # check for duplications
+    if duplications(file)
+        raise "Duplicate Data has been Found in #{filename}"
+    end
+    # check for invalid types
+    for i in file
+        case i.split(":")[1])
+            when not ("str" or "int" or "float" or "list")
+                raise "Invalid type #{i} at line #{file.index(i)} in #{filename}"
+    end
 end
 
 # o(n) list filtering algo (better than naive o(n^2))
-def checkIfDuplicates(list)
+def duplications(list)
     result = []
     hash_table = {}
     list.each do |item|
