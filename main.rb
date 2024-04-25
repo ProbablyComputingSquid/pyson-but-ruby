@@ -91,24 +91,22 @@ def readPysonFile(filename)
     return output
 end
 
+
+# couldn't you getwhole and split???
 def getData(filePath, dataName)
     """Inputs: 
     filePath - folder/file.pyson (note: can have multiple folder paths, however file MUST use pyson-type file configuration.
     datacall: str - name of data that you are extracting
     Outputs the data stored in pyson format that it's inserted as."""
-    # Checks for .pyson compatability
-    # [TODO]
-    #if not checkCompatible(filePath)
-    #    raise "File is not compatible with .pyson format."
-    #end
-        # start lost and found
-    lost = File.open(filePath, "r").read().split("\n")
+    
+    data = File.open(filePath, "r").read().split("\n")
     found = nil
-    foundT = nil
-    for i in lost
+    foundType = nil
+    for i in data
         if i.split(":")[0] == dataName
             found = i.split(":")[2]
-            foundT = i.split(":")[1]
+            foundType = i.split(":")[1]
+            break
         end
     end
 
@@ -116,7 +114,7 @@ def getData(filePath, dataName)
         raise "Data At Value #{dataName} Not Found. Maybe try a different file?"
     end
         
-    case foundT
+    case foundType
         when "str"
             return String(found)
         when "int"
@@ -125,13 +123,10 @@ def getData(filePath, dataName)
             return Float(found)
         when "list"
             return found.split("(*)")
-        when nil
-            warn "Warning: Encountered 'none' type. Please verify the input."
-            # Handle the 'none' type case or raise an error
         else
             puts "You gave me #{line[1]} -- I have no idea what to do with that."
-        end
     end
+end
 
 # writes pyson data to a pyson file. data is a list of PysonValue objects
 # the program "calls" each object (slow, I know) but it makes it easier to maintain
@@ -144,6 +139,10 @@ def writePysonfile(filename, data)
     file.write(output)
 end
 
+def verifyFile(filename)
+    """Checks if the file is a pyson file. Returns true if it is, false if it isn't"""
+    # TODO
+end
 # examples for writing and reading pyson files
 
 readPysonFile("example.pyson")
